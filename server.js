@@ -1,13 +1,11 @@
 const http = require('http');
-
-const product = require('./data/products.json');
+const { getProducts } = require('./controllers/product');
 
 const server = http.createServer((req, res) => {
   //* checks url and method from request
   if (req.url === '/api/products' && req.method === 'GET') {
-    //* send json data
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify(product));
+    //* takes both req and res objects
+    getProducts(req, res);
   } else {
     //* 404 Not Found
     res.writeHead(404, { 'Content-Type': 'application/json' });
