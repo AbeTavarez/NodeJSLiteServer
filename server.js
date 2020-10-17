@@ -1,5 +1,9 @@
 const http = require('http');
-const { getProducts, getProduct } = require('./controllers/product');
+const {
+  getProducts,
+  getProduct,
+  createProduct,
+} = require('./controllers/product');
 
 const server = http.createServer((req, res) => {
   //* checks url and method from request
@@ -14,6 +18,8 @@ const server = http.createServer((req, res) => {
     //* extracts id from url
     const id = req.url.split('/')[3];
     getProduct(req, res, id); //gets single product
+  } else if (req.url === '/api/products' && req.method === 'POST') {
+    createProduct(req, res);
   } else {
     //* 404 Not Found
     res.writeHead(404, { 'Content-Type': 'application/json' });

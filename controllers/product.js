@@ -46,8 +46,8 @@ const createProduct = async (req, res, id) => {
       price: 100,
     };
 
-    //model function
-    const newProduct = Preoduct.create(product);
+    //await for the Model to create the data with create
+    const newProduct = await Product.create(product);
 
     res.writeHead(201, { 'Content-Tyepe': 'application/json' });
     return res.end(JSON.stringify(newProduct));
@@ -59,4 +59,5 @@ const createProduct = async (req, res, id) => {
 module.exports = {
   getProducts,
   getProduct,
+  createProduct,
 };
