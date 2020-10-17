@@ -1,5 +1,5 @@
 //* DATA
-const products = require('../data/products.json');
+let products = require('../data/products.json');
 const { v4: uuidv4 } = require('uuid');
 const { writeDataToFile } = require('../utils/writeDataToFile');
 
@@ -42,10 +42,21 @@ const update = (id, product) => {
     resolve(products[index]);
   });
 };
+//* Remove Product
+const remove = (id, product) => {
+  return new Promise((resolve, reject) => {
+    // filters out the product with id we pass in
+    products = products.filter((p) => p.id !== id);
+    // write new data with the updatedProduct
+    writeDataToFile('./data/products.json', products);
+    resolve();
+  });
+};
 
 module.exports = {
   findAll,
   findById,
   create,
   update,
+  remove,
 };

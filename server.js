@@ -4,19 +4,19 @@ const {
   getProduct,
   createProduct,
   updateProduct,
+  deleteProduct,
 } = require('./controllers/product');
 
 const server = http.createServer((req, res) => {
   //* checks url and method from request *\\
   if (req.url === '/api/products' && req.method === 'GET') {
-    // takes both req and res objects \\
     getProducts(req, res); //gets all products
   } else if (
     // regex checks if url matches + method \\
     req.url.match(/\/api\/products\/([0-9]+)/) &&
     req.method === 'GET'
   ) {
-    // extracts id from url = api/products/id \\
+    // extracts ID from url - api/products/id \\
     const id = req.url.split('/')[3];
     getProduct(req, res, id); //gets single product
   } else if (req.url === '/api/products' && req.method === 'POST') {
@@ -26,9 +26,16 @@ const server = http.createServer((req, res) => {
     req.url.match(/\/api\/products\/([0-9]+)/) &&
     req.method === 'PUT'
   ) {
-    // split api/products/id \\
+    // extracts ID from URl -  split api/products/id \\
     const id = req.url.split('/')[3];
     updateProduct(req, res, id);
+  } else if (
+    // regex checks if url matches + method \\
+    req.url.match(/\/api\/products\/([0-9]+)/) &&
+    req.method === 'DELETE'
+  ) {
+    const id = req.url.split('/')[3];
+    deleteProduct(req, res, id);
   } else {
     //* 404 Not Found
     res.writeHead(404, { 'Content-Type': 'application/json' });

@@ -76,7 +76,7 @@ const updateProduct = async (req, res, id) => {
       res.end(JSON.stringify({ message: 'Product Not Found' }));
     } else {
       // gets our parse req body
-      const body = await getPostData(req);
+      const body = await getPostData(req); //utils
 
       const { title, description, price } = JSON.parse(body);
 
@@ -97,9 +97,31 @@ const updateProduct = async (req, res, id) => {
     console.error(err);
   }
 };
+
+//* @desc Delete Single Product
+//* @route DELETE /api/products/:id
+const deleteProduct = async (req, res, id) => {
+  try {
+    const product = await Product.findById(id);
+
+    if (!product) {
+      //* send json error data
+      res.writeHead(404, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ message: 'Product Not Found' }));
+    } else {
+      await Product.remove(id);
+      //* Send JSON Product Data
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ message: `Product ${id} removed.` }));
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
 module.exports = {
   getProducts,
   getProduct,
   createProduct,
   updateProduct,
+  deleteProduct,
 };

@@ -1,5 +1,6 @@
 const getPostData = (req) => {
   return new Promise((resolve, reject) => {
+    //* Parse data send in the req.body \\
     try {
       let body = '';
       req.on('data', (chunk) => {
