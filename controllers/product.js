@@ -1,5 +1,6 @@
 //* Product Model
 const Product = require('../models/product');
+const { getPostData } = require('../utils/getPostdata');
 
 //* @desc Gets All Products
 //* @route GET /api/products
@@ -40,10 +41,16 @@ const getProduct = async (req, res, id) => {
 //* @route POST /api/products
 const createProduct = async (req, res, id) => {
   try {
+    // gets our parse req body
+    const body = await getPostData(req);
+
+    const { title, description, price } = JSON.parse(body);
+
+    // create new product with req data
     const product = {
-      title: 'test Product',
-      description: 'This is my product',
-      price: 100,
+      title,
+      description,
+      price,
     };
 
     //await for the Model to create the data with create
@@ -55,7 +62,6 @@ const createProduct = async (req, res, id) => {
     console.error(err);
   }
 };
-
 module.exports = {
   getProducts,
   getProduct,
