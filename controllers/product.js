@@ -49,6 +49,7 @@ const createProduct = async (req, res, id) => {
     //model function
     const newProduct = Preoduct.create(product);
 
+    res.writeHead(201, { 'Content-Tyepe': 'application/json' });
     return res.end(JSON.stringify(newProduct));
   } catch (err) {
     console.error(err);
