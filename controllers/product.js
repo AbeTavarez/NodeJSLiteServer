@@ -62,8 +62,44 @@ const createProduct = async (req, res, id) => {
     console.error(err);
   }
 };
+
+//* @desc Updatea Product
+//* @route PUT /api/products/:id
+const updateProduct = async (req, res, id) => {
+  try {
+    // finds product in db
+    const product = await Product.findById(id);
+
+    if (!product) {
+      // send json error data
+      res.writeHead(404, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ message: 'Product Not Found' }));
+    } else {
+      // gets our parse req body
+      const body = await getPostData(req);
+
+      const { title, description, price } = JSON.parse(body);
+
+      // create new product with req data
+      const productData = {
+        title: title || product.title,
+        description: description || product.description,
+        price: price || product.price,
+      };
+
+      //await for the Model to create the data with create
+      const updatedProduct = await Product.update(id, productData);
+
+      res.writeHead(200, { 'Content-Tyepe': 'application/json' });
+      return res.end(JSON.stringify(updatedProduct));
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
 module.exports = {
   getProducts,
   getProduct,
   createProduct,
+  updateProduct,
 };

@@ -23,12 +23,23 @@ const create = (product) => {
     const newProduct = { id: uuidv4(), ...product };
     //adds new product to arr products data
     products.push(newProduct);
-
     // write new data with the newProduct
     writeDataToFile('./data/products.json', products);
-
     //sends back our new product to the client
     resolve(newProduct);
+  });
+};
+//* Update Product
+const update = (id, product) => {
+  return new Promise((resolve, reject) => {
+    //gets index of product by ID
+    const index = products.findIndex((p) => p.id === id);
+    //replaces product with new data
+    products[index] = { id, ...product };
+    // write new data with the updatedProduct
+    writeDataToFile('./data/products.json', products);
+    //sends back our updated product to the client
+    resolve(products[index]);
   });
 };
 
@@ -36,4 +47,5 @@ module.exports = {
   findAll,
   findById,
   create,
+  update,
 };
